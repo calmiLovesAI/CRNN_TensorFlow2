@@ -1,2 +1,8 @@
 .idea
 __pycache__
+/saved_model/*
+!/saved_model/README.md
+/test_images/*
+!/test_images/README.md
+/dataset/*
+!/dataset/README.md
