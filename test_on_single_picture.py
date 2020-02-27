@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # load model
     crnn_model = CRNN()
-    crnn_model.load_weights(filepath=save_model_dir)
+    crnn_model.load_weights(filepath=save_model_dir+"saved_model")
 
     pred = crnn_model(image_tensor, training=False)
     predicted_string = get_final_output_string(predict_text(pred))

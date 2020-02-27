@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     # model
     crnn_model = CRNN()
-    crnn_model.load_weights(filepath=save_model_dir)
+    crnn_model.load_weights(filepath=save_model_dir+"saved_model")
 
     # loss and metrics
     loss_object = CTCLoss()
