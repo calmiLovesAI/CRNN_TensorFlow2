@@ -1,5 +1,6 @@
 import tensorflow as tf
-from configuration import IMAGE_HEIGHT, IMAGE_WIDTH, IAMGE_CHANNELS, save_model_dir, char2index_map, test_picture_path
+from configuration import IMAGE_HEIGHT, IMAGE_WIDTH, IAMGE_CHANNELS, save_model_dir, \
+    char2index_map, test_picture_path, padding_value
 from core.crnn import CRNN
 from core.predict import predict_text
 
@@ -8,7 +9,7 @@ def get_idx2char_map():
     idx2char = {}
     for k, v in char2index_map.items():
         idx2char[v] = k
-    idx2char[-1] = "*"
+    idx2char[padding_value] = "*"
     return idx2char
 
 

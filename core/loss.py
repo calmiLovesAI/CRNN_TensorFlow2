@@ -13,3 +13,4 @@ class CTCLoss(object):
         loss_value = tf.nn.ctc_loss(labels=y_true, logits=y_pred, label_length=None, logit_length=logit_length, blank_index=padding_value)
         loss_value = tf.math.reduce_mean(loss_value)
         return loss_value
+
