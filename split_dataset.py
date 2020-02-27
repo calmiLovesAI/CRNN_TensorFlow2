@@ -1,4 +1,4 @@
-from read_dataset import Dataset
+from core.read_dataset import Dataset
 
 
 if __name__ == '__main__':

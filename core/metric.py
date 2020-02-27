@@ -1,30 +1,37 @@
 import tensorflow as tf
-from configuration import char2index_map
 
 
 class Accuracy(object):
     def __init__(self):
         super(Accuracy, self).__init__()
-        self.default_value = len(char2index_map)
 
     def __call__(self, decoded_text, true_label, *args, **kwargs):
         """
 
         :param decoded_text: tensor, shape: (batch_size, max_decoded_length)
-        :param true_label: tensor, shape: (batch_size, max_label_seq_length)
+        :param true_label: list
         :param args:
         :param kwargs:
-        :return: the accuracy of a batch prediction
+        :return: the accuracy of batch prediction
         """
+        total_num_char, num_each_dim_list = self.__dim_of_list(x=true_label)
         decoded_text = tf.cast(x=decoded_text, dtype=tf.dtypes.int32)
-        batch_size = decoded_text.shape[0]
-        max_decoded_length = decoded_text.shape[1]
-        assert max_decoded_length == true_label.shape[1]
         num_correct_char = 0
-        for i in range(batch_size):
-            for j in range(max_decoded_length):
-                if decoded_text[i, j] == true_label[i, j]:
+        for i in range(len(num_each_dim_list)):
+            for j in range(num_each_dim_list[i]):
+                if decoded_text[i, j] == true_label[i][j]:
                     num_correct_char += 1
-        total_num_char = batch_size * max_decoded_length
         batch_accuracy = num_correct_char / total_num_char
         return batch_accuracy
+
+    @staticmethod
+    def __dim_of_list(x):
+        total_num = 0
+        num_each_dim = []
+        for item in x:
+            count = 0
+            for _ in item:
+                total_num += 1
+                count += 1
+            num_each_dim.append(count)
+        return total_num, num_each_dim

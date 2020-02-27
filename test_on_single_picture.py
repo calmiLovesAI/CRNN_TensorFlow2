@@ -13,7 +13,7 @@ def get_idx2char_map():
 
 
 def get_final_output_string(output):
-    output_tensor = tf.squeeze(output)
+    output_tensor = tf.squeeze(output, axis=0)
     idx2char = get_idx2char_map()
     output_string_list = []
     for i in range(output_tensor.shape[0]):

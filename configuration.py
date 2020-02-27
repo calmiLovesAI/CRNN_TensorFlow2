@@ -20,4 +20,5 @@ test_label = ""
 
 
 char2index_map = {}
-padding_value = -1
+
+padding_value = len(char2index_map)

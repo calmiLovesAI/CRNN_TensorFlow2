@@ -1,6 +1,6 @@
 import tensorflow as tf
-from read_dataset import Dataset
-from make_label import Label
+from core.read_dataset import Dataset
+from core.make_label import Label
 from core.crnn import CRNN
 from core.loss import CTCLoss
 from core.metric import Accuracy
@@ -43,17 +43,17 @@ if __name__ == '__main__':
         optimizer.apply_gradients(grads_and_vars=zip(gradients, crnn_model.trainable_variables))
         train_loss_metric.update_state(values=loss_value)
 
-    def valid_step(batch_images, batch_labels):
+    def valid_step(batch_images, batch_labels, labels_list):
         pred = crnn_model(batch_images, training=False)
         loss_value = loss(y_true=batch_labels, y_pred=pred)
-        acc = accuracy(decoded_text=predict_text(pred), true_label=batch_labels)
+        acc = accuracy(decoded_text=predict_text(pred), true_label=labels_list)
         valid_loss_metric.update_state(values=loss_value)
         accuracy_metric.update_state(values=acc)
 
 
     for epoch in range(EPOCHS):
         for step, train_data in enumerate(train_set):
-            batch_images, batch_labels = Label().make_label(batch_data=train_data)
+            batch_images, batch_labels, _ = Label().make_label(batch_data=train_data)
             train_step(batch_images, batch_labels)
             print("Epoch: {}/{}, step: {}/{}, loss: {:.5f}".format(epoch,
                                                                    EPOCHS,
@@ -62,8 +62,8 @@ if __name__ == '__main__':
                                                                    train_loss_metric.result()))
 
         for valid_data in valid_set:
-            batch_images, batch_labels = Label().make_label(batch_data=valid_data)
-            valid_step(batch_images, batch_labels)
+            batch_images, batch_labels, labels_list = Label().make_label(batch_data=valid_data)
+            valid_step(batch_images, batch_labels, labels_list)
         print("Epoch: {}/{}, valid_loss: {:.5f}, valid_accuracy: {:.5f}".format(epoch,
                                                                                 EPOCHS,
                                                                                 valid_loss_metric.result(),
