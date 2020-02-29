@@ -3,9 +3,8 @@ from configuration import IMAGE_HEIGHT, IMAGE_WIDTH, IAMGE_CHANNELS, dataset_ima
 from core.sparse_tensor import GenerateSparseTensor
 
 
-class Label(object):
+class Label:
     def __init__(self):
-        super(Label, self).__init__()
         self.image_root = dataset_images
         self.padding_length = IMAGE_WIDTH // 4
 

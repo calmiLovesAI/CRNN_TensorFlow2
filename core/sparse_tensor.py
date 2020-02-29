@@ -1,9 +1,9 @@
 import tensorflow as tf
 
 
-class GenerateSparseTensor(object):
+class GenerateSparseTensor:
     def __init__(self):
-        super(GenerateSparseTensor, self).__init__()
+        pass
 
     def __call__(self, indices_list, values_list, dtype, dense_shape, *args, **kwargs):
         indices = tf.convert_to_tensor(value=indices_list, dtype=tf.dtypes.int64)

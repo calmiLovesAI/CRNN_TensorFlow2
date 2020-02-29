@@ -3,9 +3,8 @@ from configuration import BATCH_SIZE, dataset_images, dataset_label, \
     train_ratio, valid_ratio, train_label, valid_label, test_label
 
 
-class Dataset(object):
+class Dataset:
     def __init__(self):
-        super(Dataset, self).__init__()
         self.images_dir = dataset_images
         self.label_dir = dataset_label
 

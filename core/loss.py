@@ -3,9 +3,9 @@ import tensorflow as tf
 from configuration import padding_value
 
 
-class CTCLoss(object):
+class CTCLoss:
     def __init__(self):
-        super(CTCLoss, self).__init__()
+        pass
 
     def __call__(self, y_true, y_pred, *args, **kwargs):
         batch_size = y_pred.shape[1]

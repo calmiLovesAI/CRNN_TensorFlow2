@@ -1,9 +1,9 @@
 import tensorflow as tf
 
 
-class Accuracy(object):
+class Accuracy:
     def __init__(self):
-        super(Accuracy, self).__init__()
+        pass
 
     def __call__(self, decoded_text, true_label, *args, **kwargs):
         """
