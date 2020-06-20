@@ -8,7 +8,7 @@ class Config:
     IAMGE_CHANNELS = 3
 
     save_model_dir = "saved_model/"
-    save_frequency = 5
+    save_frequency = 10
 
     test_picture_path = ""
 

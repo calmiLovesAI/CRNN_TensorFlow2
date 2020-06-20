@@ -24,9 +24,6 @@ class Accuracy:
         label = tf.sparse.to_dense(sp_input=true_label, default_value=self.blank_index).numpy()
         label = self.__index_to_char(inputs=label)
 
-        print("decoded: ", decoded_text)
-        print("label: ", label)
-
         correct_num = 0
         for y_pred, y_true in zip(decoded_text, label):
             if y_pred == y_true:
@@ -34,7 +31,6 @@ class Accuracy:
 
         accuracy = correct_num / batch_size
         return accuracy
-
 
     def __index_to_char(self, inputs, merge_repeated=False):
         chars = []
