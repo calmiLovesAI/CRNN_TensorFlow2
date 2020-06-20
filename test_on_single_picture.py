@@ -2,23 +2,7 @@ import tensorflow as tf
 from configuration import Config
 from core.crnn import CRNN
 from core.predict import predict_text
-
-
-def index_to_char(inputs, idx2char_dict, blank_index, merge_repeated=False):
-    chars = []
-    for item in inputs:
-        text = ""
-        pre_char = -1
-        for current_char in item:
-            if merge_repeated:
-                if current_char == pre_char:
-                    continue
-            pre_char = current_char
-            if current_char == blank_index:
-                continue
-            text += idx2char_dict[current_char]
-        chars.append(text)
-    return chars
+from core.utils import get_num_classes_and_blank_index, index_to_char
 
 
 def get_final_output_string(output, blank_index):
@@ -35,8 +19,7 @@ if __name__ == '__main__':
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
 
-    num_classes = len(Config.get_idx2char())
-    blank_index = num_classes - 1
+    num_classes, blank_index = get_num_classes_and_blank_index()
 
     # read image
     image_raw = tf.io.read_file(Config.test_picture_path)

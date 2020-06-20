@@ -5,6 +5,7 @@ from core.crnn import CRNN
 from core.loss import CTCLoss
 from core.metric import Accuracy
 from core.predict import predict_text
+from core.utils import get_num_classes_and_blank_index
 from configuration import Config
 
 
@@ -17,8 +18,7 @@ if __name__ == '__main__':
 
     # dataset
     dataset = Dataset()
-    num_classes = dataset.num_classes
-    blank_index = dataset.blank_index
+    num_classes, blank_index = get_num_classes_and_blank_index()
     train_set, train_size = dataset.train_dataset()
     valid_set, valid_size = dataset.valid_dataset()
 

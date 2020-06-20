@@ -13,9 +13,6 @@ class Dataset:
         self.train_ratio = Config.train_ratio
         self.valid_ratio = Config.valid_ratio
 
-        self.num_classes = len(Config.get_idx2char())
-        self.blank_index = self.num_classes - 1
-
     def split_dataset(self):
         print("Splitting dataset...")
         with open(file=self.label_dir, mode="r") as f:

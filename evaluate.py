@@ -6,7 +6,7 @@ from core.loss import CTCLoss
 from core.metric import Accuracy
 from core.predict import predict_text
 from configuration import Config
-
+from core.utils import get_num_classes_and_blank_index
 
 if __name__ == '__main__':
     # GPU settings
@@ -17,8 +17,7 @@ if __name__ == '__main__':
 
     # dataset
     dataset = Dataset()
-    num_classes = dataset.num_classes
-    blank_index = dataset.blank_index
+    num_classes, blank_index = get_num_classes_and_blank_index()
     test_set, test_size = dataset.test_dataset()
 
     # model
