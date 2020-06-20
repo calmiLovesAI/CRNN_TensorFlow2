@@ -12,7 +12,7 @@ class Accuracy:
         """
 
         :param decoded_text: tensor, shape: (batch_size, max_decoded_length)
-        :param true_label: list
+        :param true_label: sparse tensor
         :param args:
         :param kwargs:
         :return: the accuracy of batch prediction
@@ -52,14 +52,3 @@ class Accuracy:
             chars.append(text)
         return chars
 
-    # @staticmethod
-    # def __dim_of_list(x):
-    #     total_num = 0
-    #     num_each_dim = []
-    #     for item in x:
-    #         count = 0
-    #         for _ in item:
-    #             total_num += 1
-    #             count += 1
-    #         num_each_dim.append(count)
-    #     return total_num, num_each_dim
