@@ -5,6 +5,7 @@ A tensorflow2 implementation of CRNN(Convolutional Recurrent Neural Network).
 ## Acknowledgments
 1. https://github.com/watsonyanghx/CNN_LSTM_CTC_Tensorflow
 2. https://github.com/MaybeShewill-CV/CRNN_Tensorflow
+3. https://github.com/FLming/CRNN.tf2
 
 
 ## References

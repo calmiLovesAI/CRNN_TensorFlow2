@@ -5,7 +5,7 @@ from core.crnn import CRNN
 from core.loss import CTCLoss
 from core.metric import Accuracy
 from core.predict import predict_text
-from configuration import BATCH_SIZE, EPOCHS, save_model_dir, save_frequency
+from configuration import Config
 
 
 if __name__ == '__main__':
@@ -17,11 +17,13 @@ if __name__ == '__main__':
 
     # dataset
     dataset = Dataset()
+    num_classes = dataset.num_classes
+    blank_index = dataset.blank_index
     train_set, train_size = dataset.train_dataset()
     valid_set, valid_size = dataset.valid_dataset()
 
     # model
-    crnn_model = CRNN()
+    crnn_model = CRNN(num_classes)
 
     # loss
     loss = CTCLoss()
@@ -32,7 +34,7 @@ if __name__ == '__main__':
     # metrics
     train_loss_metric = tf.metrics.Mean()
     valid_loss_metric = tf.metrics.Mean()
-    accuracy = Accuracy()
+    accuracy = Accuracy(blank_index)
     accuracy_metric = tf.metrics.Mean()
 
     def train_step(batch_images, batch_labels):
@@ -43,29 +45,29 @@ if __name__ == '__main__':
         optimizer.apply_gradients(grads_and_vars=zip(gradients, crnn_model.trainable_variables))
         train_loss_metric.update_state(values=loss_value)
 
-    def valid_step(batch_images, batch_labels, labels_list):
+    def valid_step(batch_images, batch_labels):
         pred = crnn_model(batch_images, training=False)
         loss_value = loss(y_true=batch_labels, y_pred=pred)
-        acc = accuracy(decoded_text=predict_text(pred), true_label=labels_list)
+        acc = accuracy(decoded_text=predict_text(pred, blank_index=blank_index), true_label=batch_labels)
         valid_loss_metric.update_state(values=loss_value)
         accuracy_metric.update_state(values=acc)
 
 
-    for epoch in range(EPOCHS):
+    for epoch in range(Config.EPOCHS):
         for step, train_data in enumerate(train_set):
-            batch_images, batch_labels, _ = Label().make_label(batch_data=train_data)
+            batch_images, batch_labels = Label().make_label(batch_data=train_data)
             train_step(batch_images, batch_labels)
             print("Epoch: {}/{}, step: {}/{}, loss: {:.5f}".format(epoch,
-                                                                   EPOCHS,
+                                                                   Config.EPOCHS,
                                                                    step,
-                                                                   tf.math.ceil(train_size / BATCH_SIZE),
+                                                                   tf.math.ceil(train_size / Config.BATCH_SIZE),
                                                                    train_loss_metric.result()))
 
         for valid_data in valid_set:
-            batch_images, batch_labels, labels_list = Label().make_label(batch_data=valid_data)
-            valid_step(batch_images, batch_labels, labels_list)
+            batch_images, batch_labels = Label().make_label(batch_data=valid_data)
+            valid_step(batch_images, batch_labels)
         print("Epoch: {}/{}, valid_loss: {:.5f}, valid_accuracy: {:.5f}".format(epoch,
-                                                                                EPOCHS,
+                                                                                Config.EPOCHS,
                                                                                 valid_loss_metric.result(),
                                                                                 accuracy_metric.result()))
 
@@ -73,7 +75,7 @@ if __name__ == '__main__':
         valid_loss_metric.reset_states()
         accuracy_metric.reset_states()
 
-        if epoch % save_frequency == 0:
-            crnn_model.save_weights(filepath=save_model_dir+"epoch-{}".format(epoch), save_format="tf")
+        if epoch % Config.save_frequency == 0:
+            crnn_model.save_weights(filepath=Config.save_model_dir+"epoch-{}".format(epoch), save_format="tf")
 
-    crnn_model.save_weights(filepath=save_model_dir+"saved_model", save_format="tf")
+    crnn_model.save_weights(filepath=Config.save_model_dir+"saved_model", save_format="tf")

@@ -1,20 +1,20 @@
 import tensorflow as tf
-from configuration import BATCH_SIZE, dataset_images, dataset_label, \
-    train_ratio, valid_ratio, train_label, valid_label, test_label
+from configuration import Config
 
 
 class Dataset:
     def __init__(self):
-        self.images_dir = dataset_images
-        self.label_dir = dataset_label
+        self.label_dir = Config.dataset_label
 
-        self.train_label_dir = train_label
-        self.valid_label_dir = valid_label
-        self.test_label_dir = test_label
+        self.train_label_dir = Config.train_label
+        self.valid_label_dir = Config.valid_label
+        self.test_label_dir = Config.test_label
 
-        self.train_ratio = train_ratio
-        self.valid_ratio = valid_ratio
-        # 划分数据集
+        self.train_ratio = Config.train_ratio
+        self.valid_ratio = Config.valid_ratio
+
+        self.num_classes = len(Config.get_idx2char())
+        self.blank_index = self.num_classes - 1
 
     def split_dataset(self):
         print("Splitting dataset...")
@@ -51,7 +51,7 @@ class Dataset:
     def __generate_dataset(self, label_file):
         dataset = tf.data.TextLineDataset(filenames=label_file)
         dataset_size = self.__get_size(dataset)
-        dataset = dataset.batch(batch_size=BATCH_SIZE)
+        dataset = dataset.batch(batch_size=Config.BATCH_SIZE)
         return dataset, dataset_size
 
     def train_dataset(self):

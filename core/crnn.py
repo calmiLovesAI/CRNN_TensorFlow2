@@ -1,5 +1,5 @@
 import tensorflow as tf
-from configuration import char2index_map
+from configuration import Config
 
 
 class VGG(tf.keras.layers.Layer):
@@ -81,12 +81,11 @@ class LSTMLayer(tf.keras.layers.Layer):
 
 
 class CRNN(tf.keras.Model):
-    def __init__(self):
+    def __init__(self, num_classes):
         super(CRNN, self).__init__()
-        self.NUM_CLASSES = len(char2index_map) + 1
         self.cnn_layer = VGG()
         self.lstm_layer = LSTMLayer()
-        self.fc = tf.keras.layers.Dense(units=self.NUM_CLASSES)
+        self.fc = tf.keras.layers.Dense(units=num_classes)
 
     @staticmethod
     def __map_to_sequence(x):
@@ -99,4 +98,3 @@ class CRNN(tf.keras.Model):
         x = self.fc(x)
         x = tf.transpose(a=x, perm=[1, 0, 2])
         return x
-
