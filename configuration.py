@@ -2,7 +2,7 @@
 
 class Config:
     EPOCHS = 50
-    BATCH_SIZE = 2
+    BATCH_SIZE = 8
     IMAGE_HEIGHT = 32
     IMAGE_WIDTH = 100
     IAMGE_CHANNELS = 3
